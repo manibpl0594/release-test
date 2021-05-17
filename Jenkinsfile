@@ -7,10 +7,12 @@
                 script {
                         docker.withRegistry('https://registry.hub.docker.com', 'Dockerhub_id') {
                         FINAL_BRANCH = sh(returnStdout: true, script: 'echo ${BRANCH_NAME} | cut -d "/" -f2')
+                        FINAL_TAG = sh(returnStdout: true, script: 'echo ${FINAL_BRANCH}-${BUILD_NUMBER})
                         sh "echo $FINAL_BRANCH"
-                        def customImage = docker.build("manibpl0509/release:${FINAL_BRANCH}-${BUILD_NUMBER}", "-f Dockerfile .")
+                        sh "echo $FINAL_TAG"
+                        def customImage = docker.build("manibpl0509/release", "-f Dockerfile .")
                         /* Push the container to the custom Registry */
-                         customImage.push()
+                         customImage.push("${FINAL_TAG}")
                        }
                    }
               }
