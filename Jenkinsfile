@@ -7,7 +7,6 @@
                         docker.withRegistry('https://registry.hub.docker.com', 'Dockerhub_id') {
                         FINAL_BRANCH = sh(returnStdout: true, script: 'echo ${BRANCH_NAME} | cut -d "/" -f2')
                         FINAL_TAG = sh(returnStdout: true, script: 'echo "${env.FINAL_BRANCH}-${env.BUILD_NUMBER}"').trim()
-                        # echo "xyz2 = ${stable_revision%%[[:space:]]}/d"
                         sh "echo $FINAL_BRANCH"
                         sh "echo $FINAL_TAG"
                         sh "echo $BUILD_NUMBER"
