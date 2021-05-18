@@ -9,6 +9,7 @@
                         FINAL_TAG = sh(returnStdout: true, script: 'echo ${BUILD_NUMBER} | tr -d "[:space:]"')
                         sh "echo $FINAL_BRANCH"
                         sh "echo $FINAL_TAG"
+                        sh "echo $FINAL_BRANCH-$FINAL_TAG" 
                          def customImage = docker.build("manibpl0509/release-test:'$FINAL_BRANCH-$FINAL_TAG'", "-f Dockerfile .")
                         /* Push the container to the custom Registry */
                          customImage.push()
