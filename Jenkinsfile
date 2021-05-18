@@ -1,4 +1,3 @@
-
  pipeline{
        agent { label 'master'} 
        stages {
@@ -6,13 +5,13 @@
             steps {
                 script {
                         docker.withRegistry('https://registry.hub.docker.com', 'Dockerhub_id') {
-                        FINAL_BRANCH = sh(returnStdout: true, script: 'echo ${BRANCH_NAME} | cut -d "/" -f2')
-                        FINAL_TAG = sh(returnStdout: true, script: "echo ${FINAL_BRANCH}-${BUILD_NUMBER}")
+                        FINAL_BRANCH = sh(returnStdout: true, script: 'echo ${BRANCH_NAME} | cut -d "/" -f2 | tr -d "[:space:]"')
+                        FINAL_TAG = sh(returnStdout: true, script: 'echo ${BUILD_NUMBER} | tr -d "[:space:]"')
                         sh "echo $FINAL_BRANCH"
                         sh "echo $FINAL_TAG"
-                        def customImage = docker.build("manibpl0509/release", "-f Dockerfile .")
+                         def customImage = docker.build("manibpl0509/release-test:'$FINAL_BRANCH-$FINAL_TAG'", "-f Dockerfile .")
                         /* Push the container to the custom Registry */
-                         customImage.push("${FINAL_TAG}")
+                         customImage.push()
                        }
                  }
               }
