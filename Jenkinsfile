@@ -13,7 +13,7 @@
                         sh "echo $FINAL_BRANCH"
                         def customImage = docker.build("manibpl0509/release-test:$FINAL_BRANCH", "-f Dockerfile .")
                         /* Push the container to the custom Registry */
-                         customImage.push(${env.BUILD_ID})
+                         customImage.push("${env.BUILD_NUMBER}"))
                        }
                  }
               }
